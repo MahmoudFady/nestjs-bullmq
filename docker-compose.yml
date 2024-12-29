@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: backend-server
+    ports:
+      - '6060:6060'
+    volumes:
+      - ./src:/app/src:ro
+    environment:
+      - PORT=6060
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - internal-network
+    depends_on:
+      - redis
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    restart: always
+    networks:
+      - internal-network
+volumes:
+  redis-data:
+networks:
+  internal-network:
