@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { appEnv } from './configuration/app-env.config';
+import { BullmqModule } from './modules/bullmq/bullmq.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ load: [appEnv] })],
+  imports: [ConfigModule.forRoot({ load: [appEnv] }), BullmqModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ConfigService],
+  exports: [ConfigService],
 })
 export class AppModule {}
